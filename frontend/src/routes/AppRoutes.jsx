@@ -11,10 +11,11 @@ import AddSubscription from '../pages/subscriptions/AddSubscription'
 import LoanReport from '../pages/reports/LoanReport'
 import SubscriptionReport from '../pages/reports/SubscriptionReport'
 import TallyRegister from '../pages/reports/TallyRegister'
+import PR200Report from '../pages/reports/PR200Report'
+import PR400Report from '../pages/reports/PR400Report'
+import DepositRegister from '../pages/reports/DepositRegister'
+import DividendReport from '../pages/reports/DividendReport'
 import Administration from '../pages/administration/Administration'
-import ShareList from '../pages/shares/ShareList'
-import ShareDetails from '../pages/shares/ShareDetails'
-
 
 export default function AppRoutes() {
   return (
@@ -27,13 +28,15 @@ export default function AppRoutes() {
         <Route path="/members/edit/:emp" element={<EditMember />} />
         <Route path="/loans" element={<LoanList />} />
         <Route path="/loans/add" element={<AddLoan />} />
-        <Route path="/shares" element={<ShareList />} />
-        <Route path="/shares/:id" element={<ShareDetails />} />
         <Route path="/subscriptions" element={<SubscriptionList />} />
         <Route path="/subscriptions/add" element={<AddSubscription />} />
         <Route path="/reports/loans" element={<LoanReport />} />
         <Route path="/reports/subscriptions" element={<SubscriptionReport />} />
         <Route path="/reports/tally" element={<TallyRegister />} />
+        <Route path="/reports/pr200" element={<PR200Report />} />
+        <Route path="/reports/pr400" element={<PR400Report />} />
+        <Route path="/reports/deposit" element={<DepositRegister />} />
+        <Route path="/reports/dividend" element={<DividendReport />} />
         <Route path="/administration" element={<Administration />} />
       </Route>
     </Routes>

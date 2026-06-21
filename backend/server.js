@@ -5,6 +5,7 @@ const memberRoutes = require("./routes/memberRoutes");
 const loanRoutes = require("./routes/loanRoutes");
 const subscriptionRoutes = require("./routes/subscriptionRoutes");
 const tallyRoutes = require("./routes/tallyRoutes");
+const reportsRoutes = require("./routes/reportsRoutes");
 const shareRoutes = require("./routes/shareRoutes");
 
 const app = express();
@@ -18,6 +19,7 @@ app.use("/api/members", memberRoutes);
 app.use("/api/loans", loanRoutes);
 app.use("/api/subscriptions", subscriptionRoutes);
 app.use("/api/tally", tallyRoutes);
+app.use("/api/reports", reportsRoutes);
 app.use("/api/shares", shareRoutes);
 
 app.listen(5000, () => {
