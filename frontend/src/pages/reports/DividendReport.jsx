@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 import { getDividend } from '../../services/reportsService'
 import '../members/Members.css'
 
@@ -11,9 +13,25 @@ export default function DividendReport() {
 
   const total = data.reduce((s, r) => s + Number(r.ds_tot || 0), 0)
 
+  const downloadPDF = () => {
+    const doc = new jsPDF()
+    doc.text('Salem Steel Plant Thrift Society', 14, 10)
+    doc.text('Dividend Payment Report 2023-24', 14, 18)
+    autoTable(doc, {
+      head: [['S.No', 'Code', 'Member No', 'Emp No', 'Name', 'Month/Year', 'Dividend Amount']],
+      body: data.map(r => [r.s_no, r.cod, r.mno, r.empno, r.name, r.mnyr, r.ds_tot]),
+      foot: [['', '', '', '', '', 'Total', total]],
+      startY: 22
+    })
+    doc.save('Dividend_Report.pdf')
+  }
+
   return (
     <div>
-      <h2 className="page-title">Dividend Payment Report 2023-24</h2>
+      <div className="page-header">
+        <h2 className="page-title">Dividend Payment Report 2023-24</h2>
+        <button className="btn-primary" onClick={downloadPDF}>⬇ Download PDF</button>
+      </div>
       <div className="table-box">
         <table>
           <thead>

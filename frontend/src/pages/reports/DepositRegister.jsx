@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 import { getDepositRegister } from '../../services/reportsService'
 import '../members/Members.css'
 
@@ -13,9 +15,25 @@ export default function DepositRegister() {
   const totalCl = data.reduce((s, r) => s + Number(r.cl_bal || 0), 0)
   const totalInt = data.reduce((s, r) => s + Number(r.interest || 0), 0)
 
+  const downloadPDF = () => {
+    const doc = new jsPDF({ orientation: 'landscape' })
+    doc.text('Salem Steel Plant Thrift Society', 14, 10)
+    doc.text('Thrift Deposit Register 2025-26', 14, 18)
+    autoTable(doc, {
+      head: [['S.No', 'MNO', 'Emp No', 'Name', 'Opn Bal', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Total Dep', 'Cl Bal', 'Interest']],
+      body: data.map(r => [r.s_no, r.mno, r.empno, r.name, r.opn_bal, r.apr, r.may, r.jun, r.jul, r.aug, r.sep, r.oct, r.nov, r.dec, r.jan, r.feb, r.mar, r.dep, r.cl_bal, r.interest]),
+      foot: [['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Total', totalDep, totalCl, totalInt]],
+      startY: 22
+    })
+    doc.save('Thrift_Deposit_Register.pdf')
+  }
+
   return (
     <div>
-      <h2 className="page-title">Thrift Deposit Register 2025-26</h2>
+      <div className="page-header">
+        <h2 className="page-title">Thrift Deposit Register 2025-26</h2>
+        <button className="btn-primary" onClick={downloadPDF}>⬇ Download PDF</button>
+      </div>
       <div className="table-box">
         <table>
           <thead>

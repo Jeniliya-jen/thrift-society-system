@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 import { getPR400 } from '../../services/reportsService'
 import '../members/Members.css'
 
@@ -14,9 +16,25 @@ export default function PR400Report() {
   const totalRec = data.reduce((s, r) => s + Number(r.tot_rec || 0), 0)
   const totalBal = data.reduce((s, r) => s + Number(r.ln_bal || 0), 0)
 
+  const downloadPDF = () => {
+    const doc = new jsPDF({ orientation: 'landscape' })
+    doc.text('Salem Steel Plant Thrift Society', 14, 10)
+    doc.text('PR400 - ECTS Loan Recovery Schedule', 14, 18)
+    autoTable(doc, {
+      head: [['S.No', 'Emp No', 'Loan No', 'Name', 'Desig', 'Mem No', 'Loan Date', 'Loan Amt', 'Inst No', 'Inst Amt', 'Interest', 'Tot Rec', 'Loan Bal']],
+      body: data.map(r => [r.s_no, r.empno, r.loan_no, r.empname, r.desig, r.memno, r.date_of_loan, r.loan_amt, r.inst_no, r.inst_amt, r.interest, r.tot_rec, r.ln_bal]),
+      foot: [['', '', '', '', '', '', '', '', 'Total', totalInst, totalInterest, totalRec, totalBal]],
+      startY: 22
+    })
+    doc.save('PR400_Report.pdf')
+  }
+
   return (
     <div>
-      <h2 className="page-title">PR400 — ECTS Loan Recovery Schedule</h2>
+      <div className="page-header">
+        <h2 className="page-title">PR400 — ECTS Loan Recovery Schedule</h2>
+        <button className="btn-primary" onClick={downloadPDF}>⬇ Download PDF</button>
+      </div>
       <div className="table-box">
         <table>
           <thead>
